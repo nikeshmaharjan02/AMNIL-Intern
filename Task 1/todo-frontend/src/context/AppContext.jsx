@@ -14,7 +14,7 @@ const AppContextProvider = (props) => {
             const { data } = await axios.get(backendUrl + '/api/todos/');
 
             if (data.success) {
-                setTodos(data.data); // This updates the state
+                setTodos(data.data);
             } else {
                 toast.error(data.message);
             }
@@ -33,8 +33,7 @@ const AppContextProvider = (props) => {
     // Fetch todos when the component is mounted
     useEffect(() => {
         getTodos();
-    }, []); // Empty dependency array ensures this runs only once when the component mounts
-
+    }, []); 
     return (
         <AppContext.Provider value={value}>
             {props.children}

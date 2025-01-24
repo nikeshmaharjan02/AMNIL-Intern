@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input[type="number"] { padding: 5px; }
+        button { padding: 10px 20px; background-color: blue; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: darkblue; }
+        .message { margin-top: 20px; font-weight: bold; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1><%= message %></h1> 
+
+    <button id="start-game">Start Game</button>
+    <div>
+        <input type="number" id="user-guess" placeholder="Enter your guess" disabled />
+        <button id="submit-guess" disabled>Submit Guess</button>
+    </div>
+    <div class="message" id="message"></div>
+    <div class="error" id="error-message"></div> 
+
+    <script>
+        let attempts = 5;
+
+        // Fetch API to start a new game
+        document.getElementById('start-game').addEventListener('click', async () => {
+            const response = await fetch('/start-game');
+            const data = await response.json();
+            document.getElementById('message').innerText = data.message;
+            document.getElementById('user-guess').disabled = false;
+            document.getElementById('submit-guess').disabled = false;
+            attempts = data.attempts;
+            document.getElementById('error-message').innerText = ''; 
+        });
+
+        // Submit guess
+        document.getElementById('submit-guess').addEventListener('click', async () => {
+            const guess = document.getElementById('user-guess').value;
+            const errorMessage = document.getElementById('error-message');
+
+            
+            errorMessage.innerText = '';
+
+            // Check if input is empty
+            if (!guess) {
+                errorMessage.innerText = "Please enter a number!";
+                return;
+            }
+
+            // Check if input is a number
+            if (isNaN(guess)) {
+                errorMessage.innerText = "Please enter a valid number!";
+                return;
+            }
+
+            //Check if input is within the range 1-20
+            if (guess < 1 || guess > 20) {
+                errorMessage.innerText = "Please enter a number between 1 and 20!";
+                return;
+            }
+
+            const response = await fetch(`/guess/${guess}`);
+            const data = await response.json();
+
+            document.getElementById('message').innerText = `${data.message} Attempts left: ${data.attempts}`;
+            
+
+            if (data.attempts === 0 || data.message.includes('You\'ve got it right')) {
+                document.getElementById('user-guess').disabled = true;
+                document.getElementById('submit-guess').disabled = true;
+
+                document.getElementById('user-guess').value = '';
+            }
+        });
+    </script>
+</body>
+</html>

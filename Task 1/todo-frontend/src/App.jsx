@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
       <h1 className="text-3xl font-bold text-blue-600 mb-6">Todo App</h1>
-      <div className="w-full px-4"> {/* Removed max-w-md */}
+      <div className="w-full px-4"> 
         <TodoForm />
         <TodoList />
         <ToastContainer position="top-right" autoClose={3000} />

@@ -8,7 +8,7 @@ const TodoList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showCompleted, setShowCompleted] = useState(false); 
 
-  // Filter tasks based on search query and "Completed Tasks" toggle
+  // Filter tasks based on search query and Completed Tasks
   const filteredTodos = todos
     .filter((todo) =>
       todo.task.toLowerCase().includes(searchQuery.toLowerCase()) 
